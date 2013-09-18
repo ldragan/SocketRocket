@@ -654,7 +654,7 @@ static __strong NSData *CRLFCRLF;
         ((uint16_t *)mutablePayload.mutableBytes)[0] = EndianU16_BtoN(code);
         
         if (reason) {
-            NSRange remainingRange = {0};
+			NSRange remainingRange = {0, 0};
             
             NSUInteger usedLength = 0;
             
@@ -922,7 +922,7 @@ static inline BOOL closeCodeIsValid(int closeCode) {
             }
         }
     } else {
-        [self _addConsumerWithDataLength:frame_header.payload_length callback:^(SRWebSocket *self, NSData *newData) {
+        [self _addConsumerWithDataLength:(size_t)frame_header.payload_length callback:^(SRWebSocket *self, NSData *newData) {
             if (isControlFrame) {
                 [self _handleFrameWithData:newData opCode:frame_header.opcode];
             } else {
@@ -972,7 +972,7 @@ static const uint8_t SRPayloadLenMask   = 0x7F;
     assert((_currentFrameCount == 0 && _currentFrameOpcode == 0) || (_currentFrameCount > 0 && _currentFrameOpcode > 0));
 
     [self _addConsumerWithDataLength:2 callback:^(SRWebSocket *self, NSData *data) {
-        __block frame_header header = {0};
+        __block frame_header header = {0, 0, 0, 0};
         
         const uint8_t *headerBuffer = data.bytes;
         assert(data.length >= 2);
