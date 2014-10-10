@@ -14,6 +14,9 @@
 //   limitations under the License.
 //
 
+// SCC ADDED - not in our control and TOO MANY WARNINGS
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wimplicit-retain-self"
 
 #import "SRWebSocket.h"
 
@@ -1783,3 +1786,5 @@ static NSRunLoop *networkRunLoop = nil;
 }
 
 @end
+
+#pragma clang diagnostic pop
