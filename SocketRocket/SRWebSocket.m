@@ -604,6 +604,7 @@ static __strong NSData *CRLFCRLF;
         BOOL wasConnecting = self.readyState == SR_CONNECTING;
         
         self.readyState = SR_CLOSING;
+        _closeCode = code;
         
         SRFastLog(@"Closing with code %d reason %@", code, reason);
         
@@ -633,7 +634,6 @@ static __strong NSData *CRLFCRLF;
                 payload = [payload subdataWithRange:NSMakeRange(0, usedLength + sizeof(uint16_t))];
             }
         }
-        
         
         [self _sendFrameWithOpcode:SROpCodeConnectionClose data:payload];
     });
@@ -1158,8 +1158,7 @@ static const char CRLFCRLFBytes[] = {'\r', '\n', '\r', '\n'};
     
     if (self.readyState >= SR_CLOSING) {
         dispatch_async(_workQueue, ^{
-            _closeCode = SRStatusCodeNormal;
-            [self _disconnect];
+            [self closeConnection];
         });
         return didWork;
     }
