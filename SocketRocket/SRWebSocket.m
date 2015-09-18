@@ -610,6 +610,7 @@ static __strong NSData *CRLFCRLF;
         BOOL wasConnecting = self.readyState == SR_CONNECTING;
         
         self.readyState = SR_CLOSING;
+        _closeCode = code;
         
         SRFastLog(@"Closing with code %d reason %@", code, reason);
         
@@ -639,7 +640,6 @@ static __strong NSData *CRLFCRLF;
                 payload = [payload subdataWithRange:NSMakeRange(0, usedLength + sizeof(uint16_t))];
             }
         }
-        
         
         [self _sendFrameWithOpcode:SROpCodeConnectionClose data:payload];
     });
