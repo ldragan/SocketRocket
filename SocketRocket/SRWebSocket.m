@@ -235,7 +235,7 @@ typedef void (^data_callback)(SRWebSocket *webSocket,  NSData *data);
     BOOL _sentClose;
     BOOL _didFail;
     BOOL _cleanupScheduled;
-    int _closeCode;
+    NSInteger _closeCode;
     
     BOOL _isPumping;
     
@@ -745,7 +745,7 @@ static __strong NSData *CRLFCRLF;
 }
 
 
-static inline BOOL closeCodeIsValid(int closeCode) {
+static inline BOOL closeCodeIsValid(NSInteger closeCode) {
     if (closeCode < 1000) {
         return NO;
     }
